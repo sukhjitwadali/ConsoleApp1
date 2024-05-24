@@ -1,48 +1,75 @@
 ﻿using System;
+using System.Collections.Generic;
 
 class Program
 {
     static void Main()
     {
-        // Define prices for each item
-        double tvPrice = 350.89;
-        double smartphonePrice = 239.99;
-        double laptopPrice = 129.75;
+        // Initialize inventory
+        Dictionary<string, int> inventory = new Dictionary<string, int>()
+        {
+            { "Novels", 100 },
+            { "Science Books", 80 }
+        };
 
-        // Accept sales data
-        int tvSold, smartphonesSold, laptopsSold;
-        InputSalesData(out tvSold, out smartphonesSold, out laptopsSold);
+        // Input sales and restock data
+        Dictionary<string, int> salesData, restockData;
+        InputSalesAndRestockData(out salesData, out restockData);
 
-        // Calculate total earnings
-        double totalEarnings = CalculateTotalEarnings(tvSold, smartphonesSold, laptopsSold, tvPrice, smartphonePrice, laptopPrice);
+        // Update inventory levels based on sales and restocking
+        UpdateInventoryLevels(inventory, salesData, restockData);
 
-        // Display total earnings
-        Console.WriteLine($"Total earnings: ${totalEarnings:F2}");
+        // Display current inventory status
+        DisplayInventoryStatus(inventory);
     }
 
-    static void InputSalesData(out int tvSold, out int smartphonesSold, out int laptopsSold)
+    static void InputSalesAndRestockData(out Dictionary<string, int> salesData, out Dictionary<string, int> restockData)
     {
-        Console.Write("Enter the number of TVs sold: ");
-        tvSold = int.Parse(Console.ReadLine());
+        salesData = new Dictionary<string, int>();
+        restockData = new Dictionary<string, int>();
 
-        Console.Write("Enter the number of smartphones sold: ");
-        smartphonesSold = int.Parse(Console.ReadLine());
+        // Input sales data
+        Console.WriteLine("Enter sales data:");
+        salesData["Novels"] = GetQuantityFromUser("Novels sold: ");
+        salesData["Science Books"] = GetQuantityFromUser("Science Books sold: ");
 
-        Console.Write("Enter the number of laptops sold: ");
-        laptopsSold = int.Parse(Console.ReadLine());
+        // Input restock data
+        Console.WriteLine("Enter restock data:");
+        restockData["Novels"] = GetQuantityFromUser("Novels restocked: ");
+        restockData["Science Books"] = GetQuantityFromUser("Science Books restocked: ");
     }
 
-    static double CalculateTotalEarnings(int tvSold, int smartphonesSold, int laptopsSold, double tvPrice, double smartphonePrice, double laptopPrice)
+    static int GetQuantityFromUser(string prompt)
     {
-        // Calculate total sales
-        double totalSales = tvSold * tvPrice + smartphonesSold * smartphonePrice + laptopsSold * laptopPrice;
+        Console.Write(prompt);
+        return int.Parse(Console.ReadLine());
+    }
 
-        // Fixed salary for the salesperson
-        double fixedSalary = 2000.0; // Assuming a fixed salary of $2000
+    static void UpdateInventoryLevels(Dictionary<string, int> inventory, Dictionary<string, int> salesData, Dictionary<string, int> restockData)
+    {
+        foreach (var item in salesData)
+        {
+            if (inventory.ContainsKey(item.Key))
+            {
+                inventory[item.Key] -= item.Value;
+            }
+        }
 
-        // Total earnings = Fixed salary + Commission (5% of total sales)
-        double totalEarnings = fixedSalary + 0.05 * totalSales;
+        foreach (var item in restockData)
+        {
+            if (inventory.ContainsKey(item.Key))
+            {
+                inventory[item.Key] += item.Value;
+            }
+        }
+    }
 
-        return totalEarnings;
+    static void DisplayInventoryStatus(Dictionary<string, int> inventory)
+    {
+        Console.WriteLine("Current Inventory Status:");
+        foreach (var item in inventory)
+        {
+            Console.WriteLine($"{item.Key}: {item.Value}");
+        }
     }
 }
