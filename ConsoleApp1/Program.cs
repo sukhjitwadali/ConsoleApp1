@@ -4,50 +4,45 @@ class Program
 {
     static void Main()
     {
-        double weight, height;
-        // Accept user input for weight and height
-        InputWeightAndHeight(out weight, out height);
+        // Define prices for each item
+        double tvPrice = 350.89;
+        double smartphonePrice = 239.99;
+        double laptopPrice = 129.75;
 
-        // Calculate BMI
-        double bmi = CalculateBMI(weight, height);
+        // Accept sales data
+        int tvSold, smartphonesSold, laptopsSold;
+        InputSalesData(out tvSold, out smartphonesSold, out laptopsSold);
 
-        // Categorize BMI
-        string category = CategorizeBMI(bmi);
+        // Calculate total earnings
+        double totalEarnings = CalculateTotalEarnings(tvSold, smartphonesSold, laptopsSold, tvPrice, smartphonePrice, laptopPrice);
 
-        // Display results
-        DisplayResults(weight, height, bmi, category);
+        // Display total earnings
+        Console.WriteLine($"Total earnings: ${totalEarnings:F2}");
     }
 
-    static void InputWeightAndHeight(out double weight, out double height)
+    static void InputSalesData(out int tvSold, out int smartphonesSold, out int laptopsSold)
     {
-        Console.Write("Enter your weight in kilograms: ");
-        weight = double.Parse(Console.ReadLine());
+        Console.Write("Enter the number of TVs sold: ");
+        tvSold = int.Parse(Console.ReadLine());
 
-        Console.Write("Enter your height in meters: ");
-        height = double.Parse(Console.ReadLine());
+        Console.Write("Enter the number of smartphones sold: ");
+        smartphonesSold = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter the number of laptops sold: ");
+        laptopsSold = int.Parse(Console.ReadLine());
     }
 
-    static double CalculateBMI(double weight, double height)
+    static double CalculateTotalEarnings(int tvSold, int smartphonesSold, int laptopsSold, double tvPrice, double smartphonePrice, double laptopPrice)
     {
-        return weight / (height * height);
-    }
+        // Calculate total sales
+        double totalSales = tvSold * tvPrice + smartphonesSold * smartphonePrice + laptopsSold * laptopPrice;
 
-    static string CategorizeBMI(double bmi)
-    {
-        if (bmi < 18.5)
-            return "Underweight";
-        else if (bmi < 24.9)
-            return "Normal weight";
-        else if (bmi < 29.9)
-            return "Overweight";
-        else
-            return "Obese";
-    }
+        // Fixed salary for the salesperson
+        double fixedSalary = 2000.0; // Assuming a fixed salary of $2000
 
-    static void DisplayResults(double weight, double height, double bmi, string category)
-    {
-        Console.WriteLine($"Weight: {weight} kg, Height: {height} m");
-        Console.WriteLine($"BMI: {bmi:F2}");
-        Console.WriteLine($"Category: {category}");
+        // Total earnings = Fixed salary + Commission (5% of total sales)
+        double totalEarnings = fixedSalary + 0.05 * totalSales;
+
+        return totalEarnings;
     }
 }
