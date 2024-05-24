@@ -4,45 +4,51 @@ class Program
 {
     static void Main()
     {
-        // Define prices for each item
-        double tvPrice = 350.89;
-        double smartphonePrice = 239.99;
-        double laptopPrice = 129.75;
+        // Input attendance data for each event
+        string eventName = "Seminar A";
+        int registrants = 100;
+        int attendees = 80;
 
-        // Accept sales data
-        int tvSold, smartphonesSold, laptopsSold;
-        InputSalesData(out tvSold, out smartphonesSold, out laptopsSold);
+        // Calculate attendance rate for the event
+        double attendanceRate = CalculateAttendanceRate(registrants, attendees);
 
-        // Calculate total earnings
-        double totalEarnings = CalculateTotalEarnings(tvSold, smartphonesSold, laptopsSold, tvPrice, smartphonePrice, laptopPrice);
+        // Categorize the event based on attendance
+        string category = CategorizeAttendance(attendanceRate);
 
-        // Display total earnings
-        Console.WriteLine($"Total earnings: ${totalEarnings:F2}");
+        // Display the results
+        DisplayEventAttendance(eventName, registrants, attendees, attendanceRate, category);
     }
 
-    static void InputSalesData(out int tvSold, out int smartphonesSold, out int laptopsSold)
+    static double CalculateAttendanceRate(int registrants, int attendees)
     {
-        Console.Write("Enter the number of TVs sold: ");
-        tvSold = int.Parse(Console.ReadLine());
-
-        Console.Write("Enter the number of smartphones sold: ");
-        smartphonesSold = int.Parse(Console.ReadLine());
-
-        Console.Write("Enter the number of laptops sold: ");
-        laptopsSold = int.Parse(Console.ReadLine());
+        // Calculate attendance rate as a percentage
+        return (double)attendees / registrants * 100;
     }
 
-    static double CalculateTotalEarnings(int tvSold, int smartphonesSold, int laptopsSold, double tvPrice, double smartphonePrice, double laptopPrice)
+    static string CategorizeAttendance(double attendanceRate)
     {
-        // Calculate total sales
-        double totalSales = tvSold * tvPrice + smartphonesSold * smartphonePrice + laptopsSold * laptopPrice;
+        // Categorize events based on attendance rate
+        if (attendanceRate >= 80)
+        {
+            return "High Attendance";
+        }
+        else if (attendanceRate >= 60)
+        {
+            return "Medium Attendance";
+        }
+        else
+        {
+            return "Low Attendance";
+        }
+    }
 
-        // Fixed salary for the salesperson
-        double fixedSalary = 2000.0; // Assuming a fixed salary of $2000
-
-        // Total earnings = Fixed salary + Commission (5% of total sales)
-        double totalEarnings = fixedSalary + 0.05 * totalSales;
-
-        return totalEarnings;
+    static void DisplayEventAttendance(string eventName, int registrants, int attendees, double attendanceRate, string category)
+    {
+        // Display event attendance details
+        Console.WriteLine($"Event: {eventName}");
+        Console.WriteLine($"Registrants: {registrants}");
+        Console.WriteLine($"Attendees: {attendees}");
+        Console.WriteLine($"Attendance Rate: {attendanceRate:F2}%");
+        Console.WriteLine($"Category: {category}");
     }
 }
