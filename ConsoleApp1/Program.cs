@@ -4,49 +4,45 @@ class Program
 {
     static void Main()
     {
-        // Input work data for each employee
-        string managerName = "Manager";
-        double managerRate = 30.0;
-        int managerHours = 45;
+        // Define prices for each item
+        double tvPrice = 350.89;
+        double smartphonePrice = 239.99;
+        double laptopPrice = 129.75;
 
-        string technicianName = "Technician";
-        double technicianRate = 25.0;
-        int technicianHours = 50;
+        // Accept sales data
+        int tvSold, smartphonesSold, laptopsSold;
+        InputSalesData(out tvSold, out smartphonesSold, out laptopsSold);
 
-        // Calculate pay for each employee
-        double managerPay = CalculatePay(managerRate, managerHours);
-        double technicianPay = CalculatePay(technicianRate, technicianHours);
+        // Calculate total earnings
+        double totalEarnings = CalculateTotalEarnings(tvSold, smartphonesSold, laptopsSold, tvPrice, smartphonePrice, laptopPrice);
 
-        // Display gross pay for each employee
-        DisplayGrossPay(managerName, managerPay);
-        DisplayGrossPay(technicianName, technicianPay);
+        // Display total earnings
+        Console.WriteLine($"Total earnings: ${totalEarnings:F2}");
     }
 
-    static double CalculatePay(double rate, int hours)
+    static void InputSalesData(out int tvSold, out int smartphonesSold, out int laptopsSold)
     {
-        double regularPay;
-        double overtimePay;
+        Console.Write("Enter the number of TVs sold: ");
+        tvSold = int.Parse(Console.ReadLine());
 
-        // Regular hours (up to 40 hours)
-        if (hours <= 40)
-        {
-            regularPay = rate * hours;
-            overtimePay = 0.0;
-        }
-        else // Overtime hours (more than 40 hours)
-        {
-            regularPay = rate * 40;
-            overtimePay = rate * 1.5 * (hours - 40);
-        }
+        Console.Write("Enter the number of smartphones sold: ");
+        smartphonesSold = int.Parse(Console.ReadLine());
 
-        // Total pay including regular and overtime pay
-        double totalPay = regularPay + overtimePay;
-
-        return totalPay;
+        Console.Write("Enter the number of laptops sold: ");
+        laptopsSold = int.Parse(Console.ReadLine());
     }
 
-    static void DisplayGrossPay(string employee, double pay)
+    static double CalculateTotalEarnings(int tvSold, int smartphonesSold, int laptopsSold, double tvPrice, double smartphonePrice, double laptopPrice)
     {
-        Console.WriteLine($"{employee}'s gross pay: ${pay:F2}");
+        // Calculate total sales
+        double totalSales = tvSold * tvPrice + smartphonesSold * smartphonePrice + laptopsSold * laptopPrice;
+
+        // Fixed salary for the salesperson
+        double fixedSalary = 2000.0; // Assuming a fixed salary of $2000
+
+        // Total earnings = Fixed salary + Commission (5% of total sales)
+        double totalEarnings = fixedSalary + 0.05 * totalSales;
+
+        return totalEarnings;
     }
 }
